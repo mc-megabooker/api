@@ -1,0 +1,2 @@
+# api
+Megabooker endpoints
