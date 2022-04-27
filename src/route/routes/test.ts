@@ -11,6 +11,9 @@ router.route('/test')
     .get((req: Request, res: Response) => {
         const query = 'SELECT * FROM heroes';
 
+        console.log('Hello');
+        
+
         MariaDB.executeQuery(query)
             .then(heroes => res.json({
                 ok: true,

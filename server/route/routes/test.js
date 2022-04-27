@@ -9,6 +9,7 @@ const mariaDbConfig_1 = __importDefault(require("../../mariaDbConfig"));
 router_1.default.route('/test')
     .get((req, res) => {
     const query = 'SELECT * FROM heroes';
+    console.log('Hello');
     mariaDbConfig_1.default.executeQuery(query)
         .then(heroes => res.json({
         ok: true,
