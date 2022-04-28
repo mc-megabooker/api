@@ -4,19 +4,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const router_1 = __importDefault(require("../router"));
-const models_1 = require("../../models");
+const mariaDbConfig_1 = __importDefault(require("../../mariaDbConfig"));
 router_1.default.route('/apartments')
     // get all apartments
     .get(async (_, res) => {
     try {
-        models_1.Apartment.find({}, (error, response) => {
-            if (!error) {
-                res.status(200).json(response);
-            }
-            else {
-                throw error;
-            }
-        });
+        const query = 'SELECT * FROM heroes';
+        mariaDbConfig_1.default.executeQuery(query)
+            .then(apartments => res.json({
+            ok: true,
+            apartments
+        }))
+            .catch(error => res.status(400).json({
+            ok: false,
+            error
+        }));
     }
     catch (e) {
         const error = {
