@@ -45,7 +45,6 @@ router.route('/apartment')
       photos
     });
     try {
-      console.log("My apartment", myApartment);
       const queryToInsertRecord = `
         INSERT INTO apartments (
           providerApartmentId, lat, lng, maxPersons, generalMinimumStay, active, apartmentType, attr
