@@ -28,7 +28,7 @@ async function postApartment(myApartment) {
         console.log("Apartment posted: ", response.data);
         return response.data;
     }).catch((error) => {
-        error.log(error);
+        console.log('ERROR', error);
     });
 }
 exports.default = postApartment;

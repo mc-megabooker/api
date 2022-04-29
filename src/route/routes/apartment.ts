@@ -44,25 +44,26 @@ router.route('/apartment')
       facilities,
       photos
     });
+    const holiduApartment = await postApartment(myApartment);
+    console.log(holiduApartment);
     try {
       const queryToInsertRecord = `
         INSERT INTO apartments (
           providerApartmentId, lat, lng, maxPersons, generalMinimumStay, active, apartmentType, attr
         ) VALUES (
-          ${providerApartmentId}, ${lat}, ${lng}, ${maxPersons}, ${generalMinimumStay}, ${active}, ${apartmentType}, '{"photos": ${JSON.stringify(photos)}, "facilities": ${JSON.stringify(facilities)}, "generalMinimumPrice": ${generalMinimumPrice} }'
+          '${providerApartmentId}', ${lat}, ${lng}, ${maxPersons}, ${generalMinimumStay}, ${active}, '${apartmentType}', '{"photos": ${JSON.stringify(photos)}, "facilities": ${JSON.stringify(facilities)}, "generalMinimumPrice": ${JSON.stringify(generalMinimumPrice)} }'
         )
       `;
       // console.log(JSON.stringify(facilities));
       MariaDB.executeQuery(queryToInsertRecord)
-          .then(async () => {
-            const holiduApartment = await postApartment(myApartment);
+          .then(() => {
             const queryToUpdateRecord = `
-              UPDATE apartments SET holiduApartmentId = ${holiduApartment?.holiduApartmentId} WHERE providerApartmentId = ${providerApartmentId};
+              UPDATE apartments SET holiduApartmentId = '${holiduApartment?.holiduApartmentId}' WHERE providerApartmentId = '${providerApartmentId}';
             `;
             MariaDB.executeQuery(queryToUpdateRecord)
             .then(() => {
               const queryToReturnRecord = `
-                SELECT * FROM apartments WHERE providerApartmentId = ${providerApartmentId}
+                SELECT * FROM apartments WHERE providerApartmentId = '${providerApartmentId}'
               `;
               MariaDB.executeQuery(queryToReturnRecord)
                 .then(record => res.json({
@@ -102,7 +103,7 @@ router.route('/apartment')
     const { providerApartmentId } : { providerApartmentId: string } = req.body;
     try {
       const queryToReturnRecord = `
-        SELECT * FROM apartments WHERE providerApartmentId = ${providerApartmentId}
+        SELECT * FROM apartments WHERE providerApartmentId = "${providerApartmentId}"
       `;
       MariaDB.executeQuery(queryToReturnRecord)
         .then((record) => res.json({

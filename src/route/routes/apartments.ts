@@ -8,7 +8,21 @@ router.route('/apartments')
 // get all apartments
   .get(async (_: Request, res: Response) => {
     try {
-      const query = 'SELECT * FROM heroes';
+      const query = `SELECT
+        JSON_MERGE(
+          JSON_OBJECT(
+              'providerApartmentId', providerApartmentId,
+              'lat', lat,
+              'lng', lng,
+              'holiduApartmentId', holiduApartmentId,
+              'id', id,
+              'maxPersons', maxPersons,
+              'generalMinimumStay', generalMinimumStay,
+              'active', active,
+              'apartmentType', apartmentType),
+          attr) AS data
+      FROM apartments
+      `;
       MariaDB.executeQuery(query)
           .then(apartments => res.json({
               ok: true,

@@ -25,25 +25,26 @@ router_1.default.route('/apartment')
         facilities,
         photos
     });
+    const holiduApartment = await (0, holidu_service_1.default)(myApartment);
+    console.log(holiduApartment);
     try {
         const queryToInsertRecord = `
         INSERT INTO apartments (
           providerApartmentId, lat, lng, maxPersons, generalMinimumStay, active, apartmentType, attr
         ) VALUES (
-          ${providerApartmentId}, ${lat}, ${lng}, ${maxPersons}, ${generalMinimumStay}, ${active}, ${apartmentType}, '{"photos": ${JSON.stringify(photos)}, "facilities": ${JSON.stringify(facilities)}, "generalMinimumPrice": ${generalMinimumPrice} }'
+          '${providerApartmentId}', ${lat}, ${lng}, ${maxPersons}, ${generalMinimumStay}, ${active}, '${apartmentType}', '{"photos": ${JSON.stringify(photos)}, "facilities": ${JSON.stringify(facilities)}, "generalMinimumPrice": ${JSON.stringify(generalMinimumPrice)} }'
         )
       `;
         // console.log(JSON.stringify(facilities));
         mariaDbConfig_1.default.executeQuery(queryToInsertRecord)
-            .then(async () => {
-            const holiduApartment = await (0, holidu_service_1.default)(myApartment);
+            .then(() => {
             const queryToUpdateRecord = `
-              UPDATE apartments SET holiduApartmentId = ${holiduApartment === null || holiduApartment === void 0 ? void 0 : holiduApartment.holiduApartmentId} WHERE providerApartmentId = ${providerApartmentId};
+              UPDATE apartments SET holiduApartmentId = '${holiduApartment === null || holiduApartment === void 0 ? void 0 : holiduApartment.holiduApartmentId}' WHERE providerApartmentId = '${providerApartmentId}';
             `;
             mariaDbConfig_1.default.executeQuery(queryToUpdateRecord)
                 .then(() => {
                 const queryToReturnRecord = `
-                SELECT * FROM apartments WHERE providerApartmentId = ${providerApartmentId}
+                SELECT * FROM apartments WHERE providerApartmentId = '${providerApartmentId}'
               `;
                 mariaDbConfig_1.default.executeQuery(queryToReturnRecord)
                     .then(record => res.json({
@@ -84,7 +85,7 @@ router_1.default.route('/apartment')
     const { providerApartmentId } = req.body;
     try {
         const queryToReturnRecord = `
-        SELECT * FROM apartments WHERE providerApartmentId = ${providerApartmentId}
+        SELECT * FROM apartments WHERE providerApartmentId = "${providerApartmentId}"
       `;
         mariaDbConfig_1.default.executeQuery(queryToReturnRecord)
             .then((record) => res.json({

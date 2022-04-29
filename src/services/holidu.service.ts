@@ -26,6 +26,6 @@ export default async function postApartment(myApartment: IApartment): Promise<IA
     console.log("Apartment posted: ", response.data);
     return response.data;
   }).catch((error) => {
-    error.log(error);
+    console.log('ERROR', error);
   });
 }
