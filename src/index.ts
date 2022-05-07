@@ -3,6 +3,7 @@ import express, { Request, Response, Router, Express } from 'express';
 import path from 'path';
 import router from './route';
 import DBConnect from "./dbConfigs";
+import cors from 'cors';
 import { RequestHandler } from 'express-serve-static-core';
 
 
@@ -15,8 +16,15 @@ app.use(express.urlencoded({ extended: true }) as RequestHandler);
 
 app.use(express.json() as RequestHandler)
 
-
 const port: number = Number(process.env.PORT) || 8050; // set our port
+
+const allowedOrigins = ['http://localhost:3000', 'https://megabooker.com'];
+
+const options: cors.CorsOptions = {
+  origin: allowedOrigins
+};
+
+app.use(cors(options));
 
 // connect to database. right now it's just working with mongodb
 // but in near future it will be configured for other databases as well

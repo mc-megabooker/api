@@ -49,18 +49,13 @@ router.route('/apartment')
     try {
       const queryToInsertRecord = `
         INSERT INTO apartments (
-          providerApartmentId, lat, lng, maxPersons, generalMinimumStay, active, apartmentType, attr
+          providerApartmentId, holiduApartmentId, lat, lng, maxPersons, generalMinimumStay, active, apartmentType, attr
         ) VALUES (
-          '${providerApartmentId}', ${lat}, ${lng}, ${maxPersons}, ${generalMinimumStay}, ${active}, '${apartmentType}', '{"photos": ${JSON.stringify(photos)}, "facilities": ${JSON.stringify(facilities)}, "generalMinimumPrice": ${JSON.stringify(generalMinimumPrice)} }'
+          '${providerApartmentId}', '${holiduApartment?.holiduApartmentId}' ${lat}, ${lng}, ${maxPersons}, ${generalMinimumStay}, ${active}, '${apartmentType}', '{"photos": ${JSON.stringify(photos)}, "facilities": ${JSON.stringify(facilities)}, "generalMinimumPrice": ${JSON.stringify(generalMinimumPrice)} }'
         )
       `;
       // console.log(JSON.stringify(facilities));
       MariaDB.executeQuery(queryToInsertRecord)
-          .then(() => {
-            const queryToUpdateRecord = `
-              UPDATE apartments SET holiduApartmentId = '${holiduApartment?.holiduApartmentId}' WHERE providerApartmentId = '${providerApartmentId}';
-            `;
-            MariaDB.executeQuery(queryToUpdateRecord)
             .then(() => {
               const queryToReturnRecord = `
                 SELECT * FROM apartments WHERE providerApartmentId = '${providerApartmentId}'
@@ -74,7 +69,6 @@ router.route('/apartment')
                 ok: false,
                 error
             }));
-            });
           });
       // const savedApartment = await myApartment.save();
       // const holiduApartment = await postApartment(myApartment);

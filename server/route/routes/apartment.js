@@ -30,32 +30,26 @@ router_1.default.route('/apartment')
     try {
         const queryToInsertRecord = `
         INSERT INTO apartments (
-          providerApartmentId, lat, lng, maxPersons, generalMinimumStay, active, apartmentType, attr
+          providerApartmentId, holiduApartmentId, lat, lng, maxPersons, generalMinimumStay, active, apartmentType, attr
         ) VALUES (
-          '${providerApartmentId}', ${lat}, ${lng}, ${maxPersons}, ${generalMinimumStay}, ${active}, '${apartmentType}', '{"photos": ${JSON.stringify(photos)}, "facilities": ${JSON.stringify(facilities)}, "generalMinimumPrice": ${JSON.stringify(generalMinimumPrice)} }'
+          '${providerApartmentId}', '${holiduApartment === null || holiduApartment === void 0 ? void 0 : holiduApartment.holiduApartmentId}' ${lat}, ${lng}, ${maxPersons}, ${generalMinimumStay}, ${active}, '${apartmentType}', '{"photos": ${JSON.stringify(photos)}, "facilities": ${JSON.stringify(facilities)}, "generalMinimumPrice": ${JSON.stringify(generalMinimumPrice)} }'
         )
       `;
         // console.log(JSON.stringify(facilities));
         mariaDbConfig_1.default.executeQuery(queryToInsertRecord)
             .then(() => {
-            const queryToUpdateRecord = `
-              UPDATE apartments SET holiduApartmentId = '${holiduApartment === null || holiduApartment === void 0 ? void 0 : holiduApartment.holiduApartmentId}' WHERE providerApartmentId = '${providerApartmentId}';
-            `;
-            mariaDbConfig_1.default.executeQuery(queryToUpdateRecord)
-                .then(() => {
-                const queryToReturnRecord = `
+            const queryToReturnRecord = `
                 SELECT * FROM apartments WHERE providerApartmentId = '${providerApartmentId}'
               `;
-                mariaDbConfig_1.default.executeQuery(queryToReturnRecord)
-                    .then(record => res.json({
-                    ok: true,
-                    record
-                }))
-                    .catch(error => res.status(400).json({
-                    ok: false,
-                    error
-                }));
-            });
+            mariaDbConfig_1.default.executeQuery(queryToReturnRecord)
+                .then(record => res.json({
+                ok: true,
+                record
+            }))
+                .catch(error => res.status(400).json({
+                ok: false,
+                error
+            }));
         });
         // const savedApartment = await myApartment.save();
         // const holiduApartment = await postApartment(myApartment);
