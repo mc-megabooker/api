@@ -44,14 +44,21 @@ router.route('/apartment')
       facilities,
       photos
     });
+    console.log('MY APARTMENT: ', myApartment);
+    
     const holiduApartment = await postApartment(myApartment);
-    console.log(holiduApartment);
+    //   .catch(e => res.json({
+    //     ok: false,
+    //     e
+    //   }))
+    // console.log('HOLIDU RESPONSE: ', holiduApartment);
+    
     try {
       const queryToInsertRecord = `
         INSERT INTO apartments (
           providerApartmentId, holiduApartmentId, lat, lng, maxPersons, generalMinimumStay, active, apartmentType, attr
         ) VALUES (
-          '${providerApartmentId}', '${holiduApartment?.holiduApartmentId}' ${lat}, ${lng}, ${maxPersons}, ${generalMinimumStay}, ${active}, '${apartmentType}', '{"photos": ${JSON.stringify(photos)}, "facilities": ${JSON.stringify(facilities)}, "generalMinimumPrice": ${JSON.stringify(generalMinimumPrice)} }'
+          '${providerApartmentId}', '${holiduApartment?.holiduApartmentId}',${lat}, ${lng}, ${maxPersons}, ${generalMinimumStay}, ${active}, '${apartmentType}', '{"photos": ${JSON.stringify(photos)}, "facilities": ${JSON.stringify(facilities)}, "generalMinimumPrice": ${JSON.stringify(generalMinimumPrice)} }'
         )
       `;
       // console.log(JSON.stringify(facilities));

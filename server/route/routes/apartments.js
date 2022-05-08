@@ -27,7 +27,7 @@ router_1.default.route('/apartments')
         mariaDbConfig_1.default.executeQuery(query)
             .then(apartments => res.json({
             ok: true,
-            apartments
+            apartments: JSON.stringify(apartments)
         }))
             .catch(error => res.status(400).json({
             ok: false,

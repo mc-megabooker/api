@@ -29,6 +29,7 @@ async function postApartment(myApartment) {
         return response.data;
     }).catch((error) => {
         console.log('ERROR', error);
+        return error;
     });
 }
 exports.default = postApartment;
