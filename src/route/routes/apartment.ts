@@ -47,11 +47,6 @@ router.route('/apartment')
     console.log('MY APARTMENT: ', myApartment);
     
     const holiduApartment = await postApartment(myApartment);
-    //   .catch(e => res.json({
-    //     ok: false,
-    //     e
-    //   }))
-    // console.log('HOLIDU RESPONSE: ', holiduApartment);
     
     try {
       const queryToInsertRecord = `
