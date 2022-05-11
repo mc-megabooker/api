@@ -9,9 +9,11 @@ export default class MariaDB {
     constructor() {
         // const { mariadb: { url, port, collection, password, username } } = this._config;
         this.pool = mariadb.createPool({
-            database: 'megabooker-db',
-            user: 'megabooker-admin',
-            password: '8P_j4Hps:qB?',
+            host: "localhost",
+            port: 3306,
+            database: 'megabooker-dev',
+            user: 'root',
+            password: 'root',
             connectionLimit: 5
         });
         this.dbConnect();

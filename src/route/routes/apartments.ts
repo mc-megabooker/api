@@ -15,7 +15,6 @@ router.route('/apartments')
               'lat', lat,
               'lng', lng,
               'holiduApartmentId', holiduApartmentId,
-              'id', id,
               'maxPersons', maxPersons,
               'generalMinimumStay', generalMinimumStay,
               'active', active,
