@@ -23,10 +23,9 @@ router.route('/apartments')
       FROM apartments
       `;
       MariaDB.executeQuery(query)
-          .then(apartments => res.json({
-              ok: true,
-              apartments
-          }))
+          .then((apartments) => {
+            res.send(apartments);
+          })
           .catch(error => res.status(400).json({
               ok: false,
               error
