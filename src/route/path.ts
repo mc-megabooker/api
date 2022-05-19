@@ -13,7 +13,10 @@ function path(url: string): IPathRoute {
         },
         "/apartments": {
             methods: ["POST", "GET"]
-        }
+        },
+        "/getApartment": {
+            methods: ["POST", "GET"]
+        },
     }
     return allRoutes[url];
 }

@@ -3,11 +3,14 @@ import {Request, Response} from 'express';
 import { IError } from '../../domain/IError';
 import MariaDB from '../../mariaDbConfig';
 
-router.route('/apartments')
-// get all apartments
-  .get(async (_: Request, res: Response) => {
+router.route('/getApartment')
+  .post((req: Request, res: Response) => {
+    const { providerApartmentId }: { providerApartmentId: string } = req.body;
+    console.log('REQ BODY', req.body);
+    
     try {
-      const query = `SELECT
+      const queryToReturnRecord = `
+      SELECT
         JSON_MERGE(
           JSON_OBJECT(
               'providerApartmentId', providerApartmentId,
@@ -35,16 +38,24 @@ router.route('/apartments')
               'checkInTo', checkInTo,
               'checkOutUntil', checkOutUntil),
           attr) AS data
-      FROM apartments
+      FROM apartments WHERE providerApartmentId = "${providerApartmentId}"
       `;
-      MariaDB.executeQuery(query)
-          .then((apartments) => {
-            res.send(apartments);
-          })
-          .catch(error => res.status(400).json({
-              ok: false,
-              error
-          }));
+      MariaDB.executeQuery(queryToReturnRecord)
+        .then((record) => res.json({
+          ok: true,
+          record
+        }))
+        .catch(error => res.status(400).json({
+          ok: false,
+          error
+        }));
+      // Apartment.find({ providerApartmentId }).exec((err, response) => {
+      //   if (!err) {
+      //   res.status(200).json(response[0])
+      //   } else {
+      //     console.error(err);
+      //   }
+      // })
     } catch (e) {
       const error: IError = {
         status: 500,
@@ -53,7 +64,7 @@ router.route('/apartments')
       console.error(e);
       res.status(error.status).json({message: "Something is wrong"});
     }
-    
-  });
+  })
+
 
   export default router;

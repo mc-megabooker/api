@@ -192,37 +192,5 @@ router.route('/apartment')
       res.status(error.status).json({message: e})
     }
   })
-  // get apartment from DB by providerApartmentId
-  .get((req: Request, res: Response) => {
-    const { providerApartmentId } : { providerApartmentId: string } = req.body;
-    try {
-      const queryToReturnRecord = `
-        SELECT * FROM apartments WHERE providerApartmentId = "${providerApartmentId}"
-      `;
-      MariaDB.executeQuery(queryToReturnRecord)
-        .then((record) => res.json({
-          ok: true,
-          record
-        }))
-        .catch(error => res.status(400).json({
-          ok: false,
-          error
-        }));
-      // Apartment.find({ providerApartmentId }).exec((err, response) => {
-      //   if (!err) {
-      //   res.status(200).json(response[0])
-      //   } else {
-      //     console.error(err);
-      //   }
-      // })
-    } catch (e) {
-      const error: IError = {
-        status: 500,
-        message: "Something is wrong"
-      }
-      console.error(e);
-      res.status(error.status).json({message: "Something is wrong"});
-    }
-  })
 
   export default router;
